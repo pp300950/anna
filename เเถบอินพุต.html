@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Box Example</title>
+    <title>Anna</title>
     <style>
         /* CSS for styling */
         .input-box {
@@ -41,7 +41,7 @@
         }
 
         .button3 {
-            background-color: #f44336;
+            background-color: #c23f9a;
             /* Red */
             color: white;
         }
@@ -59,10 +59,11 @@
 </head>
 
 <body>
-
+<h1>ดิชั้น Anna ผู้ที่จะมาทายชื่อของคุณในวันนี้ค่ะ</h1>
     <div class="input-box">
         <input type="text" id="inputField" class="input-field" readonly>
     </div>
+    <h3 style="color: red;"> *** โปรดทราบนะคะว่าในเเต่ละหัวข้อให้เลือกได้เพียงข้อเดียวเท่านั้นค่ะ ไม่งั้นถ้าเค้าทายผิดอย่ามางอนกันนะคะ</h3>
     <div id="addedTexts" style="display: none;"></div>
     <div id="result"></div>
     <div id="buttonContainer"></div>
@@ -158,6 +159,25 @@
                 โรงเรียน: 'เรียนม.ปลายที่พานทอง',
                 ชือ: 'คุณมีอีกชื่อคือวิว',
                 สนิท: 'เป็นเพื่อนที่สนิทกับมิ้นต์'
+            },
+            {
+                name: 'เจนนี่',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'ไม่ได้เป็นเพื่อนกันในเฟส',
+                โรงเรียน: 'เรียนอยู่ที่จีน',
+                เกมทีชอบ: 'ROG',
+            },
+            {
+                name: 'บิวตี้',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                เคยมีเเฟน: 'ไม่เคย',
+                ความสัมพัน: 'ไม่ได้เป็นเพื่อนกันในเฟส',
+                โรงเรียน: 'เคยเรียนที่ โรงเรียนสุรนารี ตอนม.ต้น',
+                ความชอบ: 'ชอบวาดรูป',
+                พบกัน: 'คุณกับปังปอนด์พบกันเพราะเกม miniworld',
             },
             {
                 name: 'ว่านน้ำ',
@@ -626,7 +646,7 @@ const classifier = new NaiveBayes();
        
         createButtonsForProperty('เพศ', 'button1', 'เลือกเพศของท่าน');
         createButtonsForProperty('อายุ', 'button2', 'เลือกตัวเลขที่ใกล้เคียงอายุท่านมากที่สุด');
-        createButtonsForProperty('ความสัมพัน', 'button3', 'ท่านมีความสัมพันธ์อย่างไรกับปังปอนด์');
+        createButtonsForProperty('ความสัมพัน', 'button3', 'ท่านมีความสัมพันธ์อย่างไรกับปังปอนด์ (โปรดตอบเพียงข้อเดียวลำดับความสำคัญเรียงจากซ้ายไปด้านขวา)');
         createButtonsForProperty('ความชอบ', 'button5', 'คุณชอบอะไรมากที่สุด (ไม่ใช่ทั้งหมดนี้ให้ข้าม) (ผู้ที่อายุมากกว่า18ให้ข้ามข้อนี้)');
         createButtonsForProperty('เดือนเกิด', 'button4', 'เลือกเดือนเกิดของท่าน (อ้างอิงข้อมูลตามเดือนเกิดบนเฟซบุ๊ค)');
         createButtonsForProperty('โรงเรียน', 'button3', 'คุณเรียนที่ไหนในปัจจุบัน (ไม่มีช้อยให้ข้ามข้อนี้) (ผู้ที่อายุมากกว่า18ให้ข้ามข้อนี้)');
