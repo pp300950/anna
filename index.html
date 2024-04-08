@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบหาค่าความใกล้เคียง</title>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .confirmation-buttons {
+            margin-top: 20px;
+        }
+
+        .confirmation-buttons button {
+            margin: 0 10px;
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ระบบหาค่าความใกล้เคียง</h1>
+        <div id="question"></div>
+        <div class="confirmation-buttons">
+            <button onclick="answerQuestion(true)">ใช่</button>
+            <button onclick="answerQuestion(false)">ไม่ใช่</button>
+        </div>
+        <div id="result">
+            <p>บุคคลที่คุณตามหาอาจเป็น <span id="mostSimilarPerson"></span> (<span id="matchPercentage"></span>%)</p>
+        </div>
+    </div>
+    <script>
+        const data = [
+            {
+                name: 'อั๋น',
+                เพศ: 'ชาย',
+                อายุ: 16,
+                'เพื่อนสมัยเรียนประถมด้วยกัน': true,
+                'เป็นเพื่อนสนิทกับปังปอน': true,
+                'ชอบวาดรูปรถ': true,
+                'ชอบรถทัวร์': true,
+                'เขียนตามคำบอกเก่ง': true
+            },
+            {
+                name: 'ปูน',
+                เพศ: 'ชาย',
+                อายุ: 16,
+                'เพื่อนสมัยเรียนประถมด้วยกัน': true,
+                'เป็นเพื่อนสนิทกับปังปอน': true,
+                'เป็นคนพูดน้อย': true,
+                'กำลังเรียนรู้ภาษาอังกฤษ': true,
+                'กำลังเรียนรู้ภาษาญี่ปุ่น': true
+            },
+            {
+                name: 'น้ำแข็ง',
+                เพศ: 'หญิง',
+                อายุ: 14,
+                'รู้จักกันในเกม': true
+            }
+        ];
+
+        // Function to calculate similarity percentage between two objects
+        function calculateSimilarityPercentage(obj1, obj2) {
+            const keys = Object.keys(obj1);
+            let matchingAttributes = 0;
+            let totalAttributes = 0; // Variable to store the total number of attributes with non-zero weight
+            for (let key of keys) {
+                if (obj1[key] === obj2[key]) {
+                    matchingAttributes++;
+                    if (obj1[key] !== undefined && obj1[key] !== null) {
+                        totalAttributes++; // Increment the totalAttributes count if the key has non-zero weight
+                    }
+                }
+            }
+            return (totalAttributes > 0) ? (matchingAttributes / totalAttributes) * 100 : 0; // Return 0 if totalAttributes is 0
+        }
+
+        // Function to find most similar person
+        function findMostSimilarPerson(inputData) {
+            let maxPercentage = 0;
+            let mostSimilarPerson = null;
+            for (let person of data) {
+                // If gender matches, increase score
+                let score = (inputData['เพศ'] === person['เพศ']) ? 1 : -1;
+
+                const percentage = calculateSimilarityPercentage(inputData, person) + score;
+                if (percentage > maxPercentage) {
+                    maxPercentage = percentage;
+                    mostSimilarPerson = person;
+                }
+            }
+            return { person: mostSimilarPerson, percentage: maxPercentage };
+        }
+
+        // Function to generate and display a question
+        function generateQuestion() {
+            const questionDiv = document.getElementById('question');
+            questionDiv.innerHTML = '';
+
+            // Randomly choose whether to ask a question about male or female gender
+            const isAskingMaleQuestion = Math.random() < 0.5; // 50% chance to ask male question
+
+            const genderQuestion = isAskingMaleQuestion ? 'คุณเป็นผู้ชายไหม?' : 'คุณเป็นผู้หญิงไหม?';
+            const answerWeight = isAskingMaleQuestion ? 1 : -1; // Assigning weights for answer
+
+            questionDiv.textContent = genderQuestion;
+
+            return answerWeight;
+        }
+
+        // Function to handle answering question
+        function answerQuestion(answer) {
+            // Sample input data (You can replace this with your own data)
+            const inputData = {
+                name: 'ชื่อของคุณ',
+                เพศ: answer === true ? 'หญิง' : 'ชาย',
+                อายุ: 'อายุของคุณ',
+                'เพื่อนสมัยเรียนประถมด้วยกัน': true/false,
+                'เป็นเพื่อนสนิทกับปังปอน': true/false,
+                'ชอบวาดรูปรถ': true/false,
+                'ชอบรถทัวร์': true/false,
+                'เขียนตามคำบอกเก่ง': true/false,
+                'คนเงียบ': true/false,
+                'กำลังเรียนรู้ภาษาอังกฤษ': true/false,
+                'กำลังเรียนรู้ภาษาญี่ปุ่น': true/false,
+                'รู้จักกันในเกม': true/false
+            };
+
+            const { person, percentage } = findMostSimilarPerson(inputData);
+
+            // Check if the elements exist before accessing their properties
+            const mostSimilarPersonElement = document.getElementById('mostSimilarPerson');
+            const matchPercentageElement = document.getElementById('matchPercentage');
+
+            // Update the textContent only if the elements exist
+            if (mostSimilarPersonElement && matchPercentageElement) {
+                mostSimilarPersonElement.textContent = person ? person.name : '';
+                matchPercentageElement.textContent = percentage.toFixed(2);
+            }
+
+            // If the user is male and under 15, decrease the score of all users under 15
+            if (inputData['เพศ'] === 'ชาย' && answer === true && parseInt(inputData['อายุ']) < 15) {
+                for (let person of data) {
+                    if (person['อายุ'] < 15) {
+                        person.score -= 1;
+                    }
+                }
+            }
+
+            // Generate and display a new question
+            const answerWeight = generateQuestion();
+        }
+
+        // Generate the first question when the page loads
+        window.onload = function() {
+            generateQuestion();
+        };
+    </script>
+</body>
+</html>

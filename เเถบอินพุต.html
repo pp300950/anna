@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Box Example</title>
+    <style>
+        /* CSS for styling */
+        .input-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .input-field {
+            width: 80%;
+            padding: 8px;
+            margin: 5px;
+            box-sizing: border-box;
+        }
+
+        .button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .button1 {
+            background-color: #4CAF50;
+            /* Green */
+            color: white;
+        }
+
+        .button2 {
+            background-color: #008CBA;
+            /* Blue */
+            color: white;
+        }
+
+        .button3 {
+            background-color: #f44336;
+            /* Red */
+            color: white;
+        }
+
+        .button4 {
+            background-color: #555555;
+            /* Black */
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="input-box">
+        <input type="text" id="inputField" class="input-field" readonly>
+    </div>
+    <div id="addedTexts" style="display: none;"></div>
+    <div id="result"></div>
+    <div id="buttonContainer"></div>
+
+    <script>
+        // Data
+        const data = [
+            {
+                name: 'อั๋น',
+                เพศ: 'ชาย',
+                อายุ: 16,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'เพื่อนสมัยเรียนประถมด้วยกัน',
+                ผลการเรียน: 'ตอนเรียนป.3-6 ผลการเรียน ไม่ใช่อันดับที่ 1-3 ของห้องเสมอ',
+                เดือนเกิด: 'เมษายน',
+                ความชอบ: 'ชอบรถทัวร์',
+                ถนัด: 'เขียนตามคำบอก',
+            },
+            {
+                name: 'ปูน',
+                เพศ: 'ชาย',
+                อายุ: 16,
+                เคยมีเเฟน: 'ไม่เคย',
+                ความสัมพัน: 'เพื่อนสมัยเรียนประถมด้วยกัน',
+                ผลการเรียน: 'ตอนเรียนป.3-6 ผลการเรียน ไม่ใช่อันดับที่ 1-3 ของห้องเสมอ',
+                เดือนเกิด: 'พฤศจิกายน',
+                โรงเรียน: 'เรียนม.ต้นที่พานทองสภา',
+                ความชอบ: 'นอน',
+                ถนัด: 'ภาษาอังกฤษ',
+                บุคลิก: 'พูดน้อย'
+            },
+            {
+                name: 'ยูชิ',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                ความสัมพัน: 'เพื่อนสมัยเรียนประถมด้วยกัน',
+                ผลการเรียน: 'ตอนเรียนป.3-6 ผลการเรียนได้อันดับที่ 1-3 ของห้องเสมอ',
+                เดือนเกิด: 'สิงหาคม',
+                โรงเรียน: 'เรียนม.ต้นที่พานทองสภา',
+                ความชอบ: 'ชอบหนุ่มวาย-เกาหลี',
+                บุคลิก: 'เป็นสาวเท่'
+            },
+            {
+                
+                name: 'เปิ้ล',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                ความสัมพัน: 'เพื่อนสมัยเรียนประถมด้วยกัน',
+                ผลการเรียน: 'ตอนเรียนป.3-6 ผลการเรียนได้อันดับที่ 1-3 ของห้องเสมอ',
+                เดือนเกิด: 'มกราคม',
+                ชือ: 'มีชื่อเล่นที่เกี่ยวกับหรือเป็น ผลไม้',
+                ความชอบ: 'ชอบหนุ่มวาย-เกาหลี',
+            },
+            {
+                name: 'ใบเตย',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                เคยมีเเฟน: 'ไม่เคย',
+                ความสัมพัน: 'เพื่อนสมัยเรียนประถมด้วยกัน',
+                โรงเรียน: 'เรียนม.ต้นที่พนัสพิทยาคาร',
+                ผลการเรียน: 'ตอนเรียนป.3-6 ผลการเรียนได้อันดับที่ 1-3 ของห้องเสมอ',
+                เดือนเกิด: 'มิถุนายน',
+                ความชอบ: 'ชอบหนุ่มวาย-เกาหลี',
+            },
+            {
+                name: 'จ๋า',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                ความสัมพัน: 'เพื่อนสมัยเรียนประถมด้วยกัน',
+                ผลการเรียน: 'ตอนเรียนป.3-6 ผลการเรียน ไม่ใช่อันดับที่ 1-3 ของห้องเสมอ',
+                โรงเรียน: 'เรียนม.ต้นที่วัดศรีประชาราม',
+                สนิท: 'เป็นเพื่อนที่สนิทกับปูนนิดหน่อย',
+                บุคลิก: 'เป็นสาวเท่'
+               
+            },
+            {
+                name: 'ผักบุ้ง',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                ความสัมพัน: 'เพื่อนสมัยเรียนประถมด้วยกัน',
+                เดือนเกิด: 'กรกฎาคม',
+                ผลการเรียน: 'ตอนเรียนป.3-6 ผลการเรียน ไม่ใช่อันดับที่ 1-3 ของห้องเสมอ',
+                ชือ: 'ชื่อเล่นของคุณเกี่ยวกับน้ำ เช่นผักในน้ำ หรือมีคำว่าน้ำในชื่อ',
+                สนิท: 'เป็นเพื่อนที่สนิทกับมิ้นต์'
+            },
+            {
+                name: 'มิ้นต์',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'เพื่อนของเพื่อน',
+                เดือนเกิด: 'พฤษภาคม',
+                โรงเรียน: 'เรียนม.ปลายที่พานทอง',
+                ชือ: 'คุณมีอีกชื่อคือวิว',
+                สนิท: 'เป็นเพื่อนที่สนิทกับมิ้นต์'
+            },
+            {
+                name: 'ว่านน้ำ',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                ความสัมพัน: 'เพื่อนสมัยเรียนประถมด้วยกัน',
+                ผลการเรียน: 'ตอนเรียนป.3-6 ผลการเรียน ไม่ใช่อันดับที่ 1-3 ของห้องเสมอ',
+                ชือ: 'ชื่อเล่นของคุณเกี่ยวกับน้ำ เช่นผักในน้ำ หรือมีคำว่าน้ำในชื่อ',
+                สนิท: 'เป็นเพื่อนที่สนิทกับพวกไอซ์1เเละนนท์'
+            },
+            {
+                name: 'เจ๊ลิลลี่',
+                เพศ: 'ชาย',
+                อายุ: 16,
+                เคยมีเเฟน: 'ไม่เคย',
+                ความสัมพัน: 'เพื่อนสมัยเรียนประถมด้วยกัน',
+                เดือนเกิด: 'สิงหาคม',
+                ผลการเรียน: 'ตอนเรียนป.3-6 ผลการเรียน ไม่ใช่อันดับที่ 1-3 ของห้องเสมอ',
+                บุคลิก: 'คุณคือตัวเเม่'
+                 
+            },
+            {
+                name: 'ต้นข้าว',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'เพื่อนสมัยเรียนประถมด้วยกัน',
+                เดือนเกิด: 'สิงหาคม',
+                ผลการเรียน: 'ตอนเรียนป.3-6 ผลการเรียน ไม่ใช่อันดับที่ 1-3 ของห้องเสมอ',
+                สถานะ: 'คุณเป็นลูกเจ้าของบริษัทผลิตอาหารเสริม'
+            },
+            {
+                name: 'พิ',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'เพื่อนสมัยเรียนประถมด้วยกัน',
+                ผลการเรียน: 'ตอนเรียนป.3-6 ผลการเรียน ไม่ใช่อันดับที่ 1-3 ของห้องเสมอ',
+                เดือนเกิด: 'มิถุนายน',
+            },
+
+            {
+                name: 'ปอนด์',
+                เพศ: 'ชาย',
+                อายุ: 16,
+                ความสัมพัน: 'เพื่อนตอนเรียนม.ปลายด้วยกัน',
+                เดือนเกิด: 'สิงหาคม',
+                โรงเรียน: 'เรียนม.ปลายที่พานทอง',
+                สนิท: 'เป็นเพื่อนที่สนิทกันในกลุ่มปอนด์ ดรีมเเละพิงค์ น้ำฝน',
+                เกมทีชอบ: 'เกมเศรษฐี',
+                
+            },
+            {
+                name: 'พิงค์',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'เพื่อนตอนเรียนม.ปลายด้วยกัน',
+                เดือนเกิด: 'มกราคม',
+                โรงเรียน: 'เรียนม.ปลายที่พานทอง',
+                สนิท: 'เป็นเพื่อนที่สนิทกันในกลุ่มปอนด์ ดรีมเเละพิงค์ น้ำฝน',
+                ความชอบ: 'ชอบวาดรูป',
+            },
+            
+            {
+                name: 'น้ำฝน',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'เพื่อนตอนเรียนม.ปลายด้วยกัน',
+                เดือนเกิด: 'มิถุนายน',
+                โรงเรียน: 'เรียนม.ปลายที่พานทอง',
+                ความชอบ: 'ชอบวาดรูป',
+                สนิท: 'เป็นเพื่อนที่สนิทกันในกลุ่มปอนด์ ดรีมเเละพิงค์ น้ำฝน',
+                เกมทีชอบ: 'roblox',
+            },
+            {
+                name: 'นันฟาง',
+                เพศ: 'ชาย',
+                อายุ: 16,
+                ความสัมพัน: 'เพื่อนตอนเรียนม.ปลายด้วยกัน',
+                เดือนเกิด: 'กันยายน',
+                โรงเรียน: 'เรียนม.ปลายที่พานทอง',
+                ความชอบ: 'ชอบขับรถเที่ยวไปทั่ว',
+                ถนัด: 'งานทุกอย่างที่ครูใช้เเละถ้าไปทำจะไม่ต้องเรียน'
+            },
+            {
+                name: 'เอ็ม',
+                เพศ: 'ชาย',
+                อายุ: 16,
+                ความสัมพัน: 'เพื่อนตอนเรียนม.ปลายด้วยกัน',
+                เดือนเกิด: 'มีนาคม',
+                โรงเรียน: 'เรียนม.ปลายที่พานทอง',
+                เกมทีชอบ: 'เกมฟุตบอล',
+            },
+            {
+                name: 'ครีม',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'เพื่อนตอนเรียนม.ปลายด้วยกัน',
+                เดือนเกิด: 'สิงหาคม',
+                โรงเรียน: 'เรียนม.ปลายที่พานทอง',
+                ความชอบ: 'ชอบเสื้อผ้าเเละการเเต่งหน้า',
+            },
+            {
+                name: 'อาร์ม',
+                เพศ: 'ชาย',
+                อายุ: 16,
+                ความสัมพัน: 'เพื่อนตอนเรียนม.ปลายด้วยกัน',
+                เดือนเกิด: 'มิถุนายน',
+                โรงเรียน: 'เรียนม.ปลายที่พานทอง',
+                ชือ: 'ชื่อเล่นของคุณภาษาไทยเเปลว่าเเขน',
+                เกมทีชอบ: 'freefire',
+            },
+            {
+                name: 'องศา',
+                เพศ: 'ชาย',
+                อายุ: 16,
+                เคยมีเเฟน: 'ไม่เคย',
+                ความสัมพัน: 'เพื่อนตอนเรียนม.ปลายด้วยกัน',
+                เดือนเกิด: 'เมษายน',
+                โรงเรียน: 'เรียนม.ปลายที่พานทอง',
+                ชือ: 'คุณมีอีกชื่อคือวิว',
+                เกมทีชอบ: 'เกมฟุตบอล',
+            },
+            {
+                name: 'ดรีม',
+                เพศ: 'ชาย',
+                อายุ: 16,
+                ความสัมพัน: 'เพื่อนตอนเรียนม.ปลายด้วยกัน',
+                เดือนเกิด: 'เมษายน',
+                โรงเรียน: 'เรียนม.ปลายที่พานทอง',
+                เกมทีชอบ: 'fiveM',
+
+                ชือ: 'ชื่อเล่นของคุณภาษาไทยเเปลว่าความฝัน',
+            },
+            {
+                name: 'เนะ',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                ความสัมพัน: 'รุ่นน้อง',
+                สนิท: 'รู้จัก อั๋นเเละปูน เป็นผู้หญิงคนเดียวในกลุ่มผู้ชาย3คน',
+                ถูกชอบ: 'ปูนชอบคุณ เเม้ไม่ใช่ อย่างน้อยปังปอนด์ก็เชียร์'
+            },
+            
+            {
+                name: 'คุณหนู',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                เคยมีเเฟน: 'ไม่เคย',
+                ความสัมพัน: 'รุ่นน้อง',
+                เดือนเกิด: 'ธันวาคม',
+                พบกัน: 'คุณกับปังปอนด์พบกันเพราะเกม miniworld',
+               
+            },
+            {
+                name: 'ผักหวาน',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                ความสัมพัน: 'รุ่นน้อง',
+                เดือนเกิด: 'ธันวาคม',
+                พบกัน: 'คุณกับปังปอนด์พบกันเพราะเกม miniworld',
+                ครอบครัว: 'มีคุณพ่อเป็นชาวต่างชาติ',
+                ถนัด: 'ภาษาอังกฤษ',
+            },
+            {
+                name: 'จันทร์จ้าว',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                ความสัมพัน: 'รุ่นน้อง',
+                เดือนเกิด: 'กุมภาพันธ์',
+                พบกัน: 'คุณกับปังปอนด์พบกันเพราะเกม miniworld',
+                ชือปลอม: 'คุณมีชื่อว่ากระต่าย  เเต่จริงๆเเล้วคุณชื่อเล่นว่า จันทร์จ้าว'
+                
+            },
+            {
+                name: 'น้ำแข็ง',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'รุ่นน้อง',
+                ชือ: 'ชื่อเล่นของคุณเกี่ยวกับน้ำ เช่นผักในน้ำ หรือมีคำว่าน้ำในชื่อ',
+                เดือนเกิด: 'กรกฎาคม',
+                พบกัน: 'คุณกับปังปอนด์พบกันเพราะเกม freefire'
+            },
+            {
+                name: 'ฝันหวาน',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                ความสัมพัน: 'รุ่นน้อง',
+                พบกัน: 'คุณกับปังปอนด์พบกันเพราะเกม freefire',
+                ถนัด: 'วาดรูปสวย',
+                ความชอบ: 'ชอบวาดรูป',
+            },
+            {
+                name: 'เกรป',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                ความสัมพัน: 'รุ่นน้อง',
+                ชือ: 'มีชื่อเล่นที่เกี่ยวกับหรือเป็น ผลไม้',
+                เดือนเกิด: 'กรกฎาคม',
+                พบกัน: 'คุณกับปังปอนด์พบกันเพราะเกม freefire'
+            },
+            {
+                name: 'พิมพ์',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'รุ่นน้อง',
+                เดือนเกิด: 'มกราคม',
+                พบกัน: 'คุณกับปังปอนด์พบกันเพราะเกม freefire',
+                เเคลน: 'คุณเป็นลูกเเคลนของเเคลน ID:[???]'
+            },
+             
+            {
+                name: 'ตัง',
+                เพศ: 'ชาย',
+                อายุ: 16,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'รุ่นน้อง',
+                เดือนเกิด: 'กันยายน',
+                พบกัน: 'คุณกับปังปอนด์พบกันเพราะเกม freefire',
+                เเคลน: 'คุณเป็นลูกเเคลนของเเคลน ID:[???]'
+            },
+            {
+                name: 'ตาล',
+                เพศ: 'ชาย',
+                อายุ: 16,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'เพื่อนตอนเรียนม.ต้นด้วยกัน',
+                เดือนเกิด: 'มีนาคม',
+                ถนัด: 'ภาษาอังกฤษ',
+                โรงเรียน: 'วิศกรรมไฟฟ้า ที่ไหนสักเเห่ง'
+            },
+            
+            {
+                name: 'ธี',
+                เพศ: 'ชาย',
+                อายุ: 16,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'เพื่อนตอนเรียนม.ต้นด้วยกัน',
+                เดือนเกิด: 'มีนาคม',
+                เเคลน: 'คุณเป็นลูกเเคลนของเเคลน ID:[???]',
+                โรงเรียน: 'กศน.'
+            },
+            {
+                name: 'เฟริน',
+                เพศ: 'หญิง',
+                อายุ: 16,
+                เคยมีเเฟน: 'ไม่เคย',
+                ผลการเรียน: 'ตอนเรียนป.3-6 ผลการเรียน ไม่ใช่อันดับที่ 1-3 ของห้องเสมอ',
+                ความสัมพัน: 'เพื่อนสมัยเรียนประถมด้วยกัน',
+                ความชอบ: 'เล่นเกม',
+                เกมทีชอบ: 'ROV',
+                ครอบครัว: 'เป็นคนภายในครอบครัวปังปอนด์',
+            },
+            
+            {
+                name: 'พี่เเดง',
+                เพศ: 'หญิง',
+                อายุ: 36,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'พี่สาวของปังปอนด์',
+                เดือนเกิด: 'พฤศจิกายน',
+                ครอบครัว: 'เป็นคนภายในครอบครัวปังปอนด์',
+            },
+            {
+                name: 'พี่เพชร',
+                เพศ: 'ชาย',
+                อายุ: 36,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'พี่เขยของปังปอนด์',
+                เดือนเกิด: 'ตุลาคม',
+                ครอบครัว: 'เป็นคนภายในครอบครัวปังปอนด์',
+            },
+            {
+                name: 'พี่กอล์ฟ',
+                เพศ: 'ชาย',
+                อายุ: 36,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'พี่ชายของปังปอนด์',
+                เดือนเกิด: 'กุมภาพันธ์',
+                ครอบครัว: 'เป็นคนภายในครอบครัวปังปอนด์',
+                ความชอบ: 'ชอบเล่นเบส',
+                เกมทีชอบ: 'ROV',
+            },
+            {
+                name: 'พี่โปรเเกรมเมอร์',
+                เพศ: 'ชาย',
+                อายุ: 36,
+                เคยมีเเฟน: 'เคย',
+                เดือนเกิด: 'มิถุนายน',
+                อาชีพ: 'โปรเเกรมเมอร์',
+                ความสัมพัน: 'รุ่นน้องที่ทำงานด้วยกัน',
+            },
+            
+            {
+                name: 'ครูโต',
+                เพศ: 'ชาย',
+                อายุ: 36,
+                เคยมีเเฟน: 'เคย',
+                ความสัมพัน: 'ครูสมัยเรียนประถม',
+                อาชีพ: 'ครูวิทยาศาสตร์'
+            },
+            /*  
+           name: '',
+           เพศ: '',
+           อายุ: 16,
+           เคยมีเเฟน: '',
+           ความสัมพัน: '',
+           ผลการเรียน: '',
+           เดือนเกิด: '',
+           โรงเรียน: '',
+           ความชอบ: '',
+           พบกัน: 'คุณกับปังปอนด์พบกันเพราะเกม freefire',
+           เเคลน: 'คุณเป็นลูกเเคลนของเเคลน ID:[???]'
+           ถนัด: ''
+           */
+        ];
+
+        function createButtonsForProperty(property, buttonClass, title) {
+            const buttonContainer = document.getElementById('buttonContainer');
+            const uniqueValues = new Set(); // Set to store unique values
+
+            const textElement = document.createElement('span');
+            textElement.textContent = title;
+            buttonContainer.appendChild(textElement);
+            buttonContainer.appendChild(document.createElement('br'));
+
+            data.forEach(person => {
+                const value = person[property];
+                if (value !== '' && value !== undefined && !uniqueValues.has(value)) { // Check if value is not empty, not undefined, and not already added
+                    uniqueValues.add(value);
+                    const button = document.createElement('button');
+
+                    button.textContent = value;
+                    button.classList.add('button');
+                    button.classList.add(buttonClass); // Add specific class for styling
+                    button.onclick = () => {
+                        addTextAndPredict(property, value); // Pass property and value to addTextAndPredict function
+                        button.remove(); // Remove the button after it's clicked
+                    };
+                    buttonContainer.appendChild(button);
+                }
+            });
+
+            textElement.textContent = title;
+            buttonContainer.appendChild(document.createElement('br')); // Add line break after each button
+        }
+
+
+
+        function addTextAndPredict(property, text) {
+            const inputField = document.getElementById('inputField');
+            const addedTexts = document.getElementById('addedTexts');
+
+            // Check if the text is already added
+            if (!inputField.value.includes(`${text}`)) {
+                // Add text to input field
+
+                inputField.value += text + ',';
+
+                // Update addedTexts display
+                addedTexts.textContent = inputField.value;
+
+                // Predict category
+                predictCategory();
+                console.log("lklkl")
+            }
+        }
+
+
+        // Event listener for input field
+        document.getElementById('inputField').addEventListener('click', function () {
+            document.getElementById('addedTexts').innerHTML = this.value;
+            //predictCategory();
+        });
+
+
+        class NaiveBayes {
+    constructor() {
+        this.classes = {};
+        this.totalSamples = 0;
+    }
+
+    learn(features, label) {
+        if (!this.classes[label]) {
+            this.classes[label] = { total: 0, features: {} };
+        }
+
+        features.forEach(feature => {
+            if (!this.classes[label].features[feature]) {
+                this.classes[label].features[feature] = 1;
+            } else {
+                this.classes[label].features[feature]++;
+            }
+            this.classes[label].total++;
+            this.totalSamples++;
+        });
+    }
+
+    categorize(features) {
+        let maxProbability = -1;
+        let predictedClass = null;
+
+        for (let label in this.classes) {
+            let classProbability = this.classes[label].total / this.totalSamples;
+            let featureProbability = 1;
+
+            // Calculate the product of conditional probabilities for each feature
+            features.forEach(feature => {
+                const featureCount = this.classes[label].features[feature] || 0;
+                const totalFeatures = this.classes[label].total || 0;
+                // Use Laplace smoothing to handle unseen features
+                featureProbability *= (featureCount + 1) / (totalFeatures + 1);
+            });
+
+            // Multiply by class prior probability
+            const probability = classProbability * featureProbability;
+
+            // Update predicted class if probability is higher
+            if (probability > maxProbability) {
+                maxProbability = probability;
+                predictedClass = label;
+            }
+        }
+
+        return predictedClass;
+    }
+}
+
+const classifier = new NaiveBayes();
+
+
+
+
+        // เรียนรู้จากข้อมูลตัวอย่าง
+        data.forEach(person => {
+            const features = [];
+            features.push(person.เพศ);
+            features.push(person.อายุ);
+            features.push(person.ความชอบ);
+            features.push(person.เคยมีเเฟน);
+            features.push(person.ความสัมพัน);
+            features.push(person.ผลการเรียน);
+            features.push(person.เดือนเกิด);
+            features.push(person.ถนัด);
+            features.push(person.โรงเรียน);
+            features.push(person.ชือ);
+            features.push(person.บุคลิก);
+            features.push(person.สนิท);
+            features.push(person.สถานะ);
+            features.push(person.ถูกชอบ);
+            features.push(person.พบกัน);
+            features.push(person.ครอบครัว);
+            features.push(person.ชือปลอม);
+            features.push(person.เเคลน);
+            features.push(person.อาชีพ);
+            features.push(person.เกมทีชอบ);
+           
+            
+            classifier.learn(features, person.name);
+        });
+        // Create buttons for each unique property
+       
+        createButtonsForProperty('เพศ', 'button1', 'เลือกเพศของท่าน');
+        createButtonsForProperty('อายุ', 'button2', 'เลือกตัวเลขที่ใกล้เคียงอายุท่านมากที่สุด');
+        createButtonsForProperty('ความสัมพัน', 'button3', 'ท่านมีความสัมพันธ์อย่างไรกับปังปอนด์');
+        createButtonsForProperty('ความชอบ', 'button5', 'คุณชอบอะไรมากที่สุด (ไม่ใช่ทั้งหมดนี้ให้ข้าม) (ผู้ที่อายุมากกว่า18ให้ข้ามข้อนี้)');
+        createButtonsForProperty('เดือนเกิด', 'button4', 'เลือกเดือนเกิดของท่าน (อ้างอิงข้อมูลตามเดือนเกิดบนเฟซบุ๊ค)');
+        createButtonsForProperty('โรงเรียน', 'button3', 'คุณเรียนที่ไหนในปัจจุบัน (ไม่มีช้อยให้ข้ามข้อนี้) (ผู้ที่อายุมากกว่า18ให้ข้ามข้อนี้)');
+        createButtonsForProperty('เคยมีเเฟน', 'button1', 'คุณเคยมีเเฟนไหม');
+        createButtonsForProperty('อาชีพ', 'button2', 'คุณทำอาชีพดังต่อไปนี้หรือไม่ (ไม่มีช้อยให้ข้ามข้อนี้)');
+        createButtonsForProperty('เกมทีชอบ', 'button4', 'คุณชอบเกมอะไร เลือกมากที่สุดไม่เกิน2เกม ');
+        createButtonsForProperty('ผลการเรียน', 'button5', 'คุณมีผลการเรียนเป็นอย่างไรในตอนเรียน ประถมปลาย (ผู้ที่อายุมากกว่า18ให้ข้ามข้อนี้)');
+        createButtonsForProperty('ถนัด', 'button1', 'ท่านเก่งในเรื่องใดมากที่สุด จากทั้งหมดนี้ (ไม่มีช้อยให้ข้ามข้อนี้)');
+        const textElement = document.createElement('span');
+        textElement.textContent = "ข้อมูลด้านล่างนี้ควรตั้งใจตอบเนื่องจากมีผลต่อการวินิจฉัยมาก";
+        createButtonsForProperty('ชือ', 'button2', 'ชื่อเล่นคุณมีลักษณะดังนี้ไหม');
+        createButtonsForProperty('บุคลิก', 'button3', 'คุณมีบุคลิกดังข้อต่อไปนี้หรือไม่');
+        createButtonsForProperty('สนิท', 'button4', 'คุณสนิทกับบุคคลต่อไปนี้หรือไม่' );
+        createButtonsForProperty('สถานะ', 'button5', 'คุณมีสถานะทางบ้านดังนี้หรือไม่');
+        createButtonsForProperty('ถูกชอบ', 'button1', 'คุณมีสถานการณ์เรื่องความรักดังต่อไปนี้หรือไม่');
+        createButtonsForProperty('พบกัน', 'button2', 'คุณกับปังปอนพบกันในเกมดังต่อไปนี้หรือไม่');
+        createButtonsForProperty('ครอบครัว', 'button3', 'หากคุณเป็นคนภายในครอบครัวปังปอนด์ ให้เลือกข้อนี้');
+        createButtonsForProperty('ชือปลอม', 'button4', 'ถ้าปัจจุบันคุณใช้ชื่อปลอมอยู่  ให้เลือกข้อมูล ' );
+        createButtonsForProperty('เเคลน', 'button5', 'หากคุณเป็นสมาชิกของเเคลน ID:[???] ให้เลือกข้อนี้');
+
+        function predictCategory() {
+            const newDataInput = document.getElementById('inputField').value;
+            const newDataArray = newDataInput.split(',').map(item => item.trim());
+            const predictedCategory = classifier.categorize(newDataArray);
+            const resultElement = document.getElementById('result');
+
+            // ตรวจสอบว่าการทำนายถูกต้องหรือไม่
+            let correctPredictions = 0;
+            data.forEach(person => {
+                const features = [];
+                features.push(person.เพศ);
+            features.push(person.อายุ);
+            features.push(person.ความชอบ);
+            features.push(person.เคยมีเเฟน);
+            features.push(person.ความสัมพัน);
+            features.push(person.ผลการเรียน);
+            features.push(person.เดือนเกิด);
+            features.push(person.ถนัด);
+            features.push(person.โรงเรียน);
+            features.push(person.ชือ);
+            features.push(person.บุคลิก);
+            features.push(person.สนิท);
+            features.push(person.สถานะ);
+            features.push(person.ถูกชอบ);
+            features.push(person.พบกัน);
+            features.push(person.ครอบครัว);
+            features.push(person.ชือปลอม);
+            features.push(person.เเคลน);
+            features.push(person.อาชีพ);
+            features.push(person.เกมทีชอบ);
+           
+                const actualCategory = person.name;
+                const predictedCategory = classifier.categorize(features);
+                if (actualCategory === predictedCategory) {
+                    correctPredictions++;
+                }
+            });
+
+            // คำนวณเปอร์เซ็นต์การทำนายที่ถูกต้อง
+            const accuracyPercentage = (correctPredictions / data.length) * 100;
+
+            resultElement.innerHTML = `ประเภทที่ทำนายได้: ${predictedCategory}<br>`;
+            resultElement.innerHTML += `ความแม่นยำ: ${accuracyPercentage.toFixed(2)}%`;
+        }
+    </script>
+
+</body>
+
+</html>
